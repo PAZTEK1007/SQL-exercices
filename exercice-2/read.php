@@ -5,7 +5,6 @@ try {
 catch (Exception $e) {     
   die('Erreur : ' . $e->getMessage());
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -33,6 +32,8 @@ catch (Exception $e) {
         echo "<td>".$row['distance']."</td>";
         echo "<td>".$row['duration']."</td>";
         echo "<td>".$row['height_difference']."</td>";
+        echo '<td>' . '<a href="/exercice-2/update.php?id=' .$row['id'] . '">'.'Modifier'.'</a>' .'</td>';
+        echo '<td>' . '<a href="/exercice-2/delete.php?id=' .$row['id'] . '">'.'Delete'.'</a>' .'</td>';
         echo "</tr>";
       }
      ?>
