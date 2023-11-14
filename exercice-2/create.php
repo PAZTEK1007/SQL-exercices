@@ -1,5 +1,7 @@
 <?php
-include '/db/data.php';
+session_start();
+
+include './db/data.php';
 
 if(isset($_POST['button'])){
 	$name = $_POST['name'];

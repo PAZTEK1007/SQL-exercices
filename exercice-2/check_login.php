@@ -1,26 +1,34 @@
 <?php
 session_start();
 
-$user_valide = "admin";
-$pwd_valide = "Azerty00";
+if (isset($_POST['button']))
+{
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-    if (isset($_POST['username']) && isset($_POST['password'])) {
+    $bdd = new PDO('mysql:host=localhost;dbname=becode;charset=utf8', 'root', 'root');
+   
+    $req = $bdd->prepare('SELECT username FROM user WHERE username = ? AND password <= ?');
+    $req->execute(array($username, sha1($password)));
 
-        if ($user_valide == $_POST['username'] && $pwd_valide == $_POST['password']) {
-
-            session_start ();
-            $_SESSION['username'] = $_POST['username'];
-            $_SESSION['password'] = $_POST['password'];
-
-            header ('location: read.php');
+    if ($result->rowCount() > 0) 
+    {
+        $data = $result->fetchAll();
+        if (password_verify($password, $data['password'])) 
+        { 
+        echo "Vous êtes connecté.";
+        $_SESSION['username'] = $username;
+        header('location: read.php');
+        exit;
+        } 
+        else
+        {
+        $password = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO user (username, password) VALUES ('$username', '$password')";
+        $req = $bdd->prepare($sql);
+        $req->execute();
+        echo "Enregistrement effectué.";
         }
-        else {
-            // Le visiteur n'a pas été reconnu comme étant membre de notre site. On utilise alors un petit javascript lui signalant ce fait
-            echo '<body onLoad="alert(\'Membre non reconnu...\')">';
-        }
-    }
-    else {
-        echo 'Les variables du formulaire ne sont pas déclarées.';
     }
 }
 ?>

@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include 'data.php';
+include './db/data.php';
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];

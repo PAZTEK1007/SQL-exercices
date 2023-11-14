@@ -1,12 +1,12 @@
 <?php
-include './db/data.php';
-
 session_start ();
 
-if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
+include './db/data.php';
+
+if (isset($_SESSION['username'])) {
 
 	echo '<body>';
-	echo 'Votre login est '.$_SESSION['username'].' et votre mot de passe est '.$_SESSION['password'].'.';
+	echo '<p>Bienvenu(e) :'.$_SESSION['username'].'</p>';
 	echo '<br />';
 
 	
