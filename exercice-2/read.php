@@ -1,10 +1,21 @@
 <?php
-try {
-  $bdd = new PDO('mysql:host=localhost;dbname=becode;charset=utf8', 'root', 'root');
+include './db/data.php';
+
+session_start ();
+
+if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
+
+	echo '<body>';
+	echo 'Votre login est '.$_SESSION['username'].' et votre mot de passe est '.$_SESSION['password'].'.';
+	echo '<br />';
+
+	
+	echo '<a href="logout.php">Déconnection</a>';
 }
-catch (Exception $e) {     
-  die('Erreur : ' . $e->getMessage());
+else {
+	echo 'Les variables ne sont pas déclarées.';
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -23,6 +34,7 @@ catch (Exception $e) {
       <th> Distance </th>
       <th> Durée </th>
       <th> Dénivelé </th>
+      <th> Disponibilité </th>
      <?php
       foreach($bdd->query('SELECT * FROM hiking') as $row) {
        
@@ -32,6 +44,7 @@ catch (Exception $e) {
         echo "<td>".$row['distance']."</td>";
         echo "<td>".$row['duration']."</td>";
         echo "<td>".$row['height_difference']."</td>";
+        echo "<td>".$row['available']."</td>";
         echo '<td>' . '<a href="/exercice-2/update.php?id=' .$row['id'] . '">'.'Modifier'.'</a>' .'</td>';
         echo '<td>' . '<a href="/exercice-2/delete.php?id=' .$row['id'] . '">'.'Delete'.'</a>' .'</td>';
         echo "</tr>";

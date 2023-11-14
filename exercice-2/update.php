@@ -1,30 +1,25 @@
 <?php
-try {
-	$bdd = new PDO('mysql:host=localhost;dbname=becode;charset=utf8', 'root', 'root');
-}
-catch (Exception $e) {     
-	die('Erreur : ' . $e->getMessage());
-}
+session_start();
+
+include 'data.php';
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    // Récupérer les informations de la randonnée à partir de la base de données
     $query = $bdd->prepare('SELECT * FROM hiking WHERE id = ?');
     $query->execute([$id]);
     $hikingData = $query->fetch();
 
-    // Vérifier si le formulaire a été soumis
     if (isset($_POST['button'])) {
-        // Mettre à jour les informations dans la base de données
         $name = $_POST['name'];
         $difficulty = $_POST['difficulty'];
         $distance = $_POST['distance'];
         $duration = $_POST['duration'];
         $height_difference = $_POST['height_difference'];
+		$available = $_POST['available'];
 
-        $updateQuery = $bdd->prepare('UPDATE hiking SET name=?, difficulty=?, distance=?, duration=?, height_difference=? WHERE id=?');
-        $updateQuery->execute([$name, $difficulty, $distance, $duration, $height_difference, $id]);
+        $updateQuery = $bdd->prepare('UPDATE hiking SET name=?, difficulty=?, distance=?, duration=?, height_difference=?,  available=? WHERE id=?');
+        $updateQuery->execute([$name, $difficulty, $distance, $duration, $height_difference, $available, $id]);
 
         echo "Randonnée mise à jour avec succès.";
     }
@@ -72,6 +67,16 @@ if (isset($_GET['id'])) {
 		<div>
 			<label for="height_difference">Dénivelé</label>
 			<input type="text" name="height_difference" value="<?php echo $hikingData['height_difference']; ?>">
+		</div>
+		<div>
+			<label for="available">Disponible</label>
+			<select name="available">
+				<option value="très facile">Très facile</option>
+				<option value="facile">Facile</option>
+				<option value="moyen">Moyen</option>
+				<option value="hard">Difficile</option>
+				<option value="very hard">Très difficile</option>
+			</select>
 		</div>
 		<button type="submit" name="button">Envoyer</button>
 	</form>

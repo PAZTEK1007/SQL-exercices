@@ -2,11 +2,7 @@
 /**** Supprimer une randonnée ****/
 session_start();
 
-try {
-    $bdd = new PDO('mysql:host=localhost;dbname=becode;charset=utf8', 'root', 'root');
-} catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-}
+include 'data.php';
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
