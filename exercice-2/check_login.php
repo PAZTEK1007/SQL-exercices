@@ -1,5 +1,5 @@
 <?php
-if (isset($_POST['button'])){
+session_start();
 
 $user_valide = "admin";
 $pwd_valide = "Azerty00";
