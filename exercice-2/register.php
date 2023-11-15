@@ -7,12 +7,11 @@ if (isset($_POST['button'])) {
     $email = $_POST['email'];
     $lastname = $_POST['lastname'];
     $name = $_POST['name'];
-
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    $sql = "INSERT INTO user (username, password) VALUES (?, ?)";
+    $sql = "INSERT INTO user (username, email, firstname, lastname, password) VALUES ('$username', '$email', '$name', '$lastname', '$hashedPassword')";
     $req = $bdd->prepare($sql);
-    $req->execute([$username, $hashedPassword]);
+    $req->execute();
 
     echo "Enregistrement effectué.";
 }
@@ -29,6 +28,7 @@ if (isset($_POST['button'])) {
 
 <form action="" method="post">
     <h3>Register an account</h3>
+    <a href="login.php">Login</a>
     <div>
         <label for="username">Identifiant</label>
         <input type="text" name="username">

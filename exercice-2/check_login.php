@@ -1,31 +1,37 @@
 <?php
 session_start();
 
-if (isset($_POST['button'])) {
+if (isset($_POST['button']))
+{
     $username = $_POST['username'];
     $password = $_POST['password'];
 
+
     $bdd = new PDO('mysql:host=localhost;dbname=becode;charset=utf8', 'root', 'root');
+    
+    $req = $bdd->prepare('SELECT * FROM user WHERE username = ? AND password <= ?');
+    $req->execute(array($username, sha1($password)));
+    $user = $req->fetch();
 
-    $req = $bdd->prepare('SELECT * FROM user WHERE username = ?');
-    $req->execute([$username]);
-
-    if ($req->rowCount() > 0) {
-        $data = $req->fetch();
-
-        // Vérification du mot de passe
-        if (password_verify($password, $data['password'])) {
-            echo "Vous êtes connecté.";
-            $_SESSION['username'] = $username;
-            header('location: read.php');
-            exit;
-        } else {
-            echo "Mot de passe incorrect.";
-        }
-    } 
-    else 
+    if ($user AND password_verify($password, $user['password']))
     {
-        echo "Utilisateur non trouvé";
+        echo "Vous êtes connecté.";
+        $_SESSION['username'] = $username;
+        
+        header('location: read.php');
+        exit;
+    
+    }
+    else
+    {
+        echo "Mot de passe incorrect.";
     }
 }
+else
+{
+    echo "Utilisateur non trouvé";
+
+}
+
+
 ?>

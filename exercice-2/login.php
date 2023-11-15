@@ -21,6 +21,7 @@ session_start();
     </div>
     <div>
         <button type="submit" name="button">Se connecter</button>
+        <a href="register.php">Register</a>
     </div>
 </form>
 </body>
